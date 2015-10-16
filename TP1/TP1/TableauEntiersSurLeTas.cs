@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 namespace TP1 {
     public unsafe class TableauEntiersSurLeTas : IDisposable {
 
-        private int* tab;
+        private int[] tab;
         private int tabSize = 0;
 
         public TableauEntiersSurLeTas() {
-            tab = (int *)Memory.Alloc(10 * sizeof(int));
+            tab = new int[10];
         }
         ~TableauEntiersSurLeTas() {
 
@@ -24,7 +24,7 @@ namespace TP1 {
 
         protected virtual void Dispose(bool disposing) {
             if (disposing) {
-                Memory.Free(tab);
+                System.GC.Collect();
             }
         }
 
@@ -36,18 +36,44 @@ namespace TP1 {
         }
 
         public void AjoutEntier(int nb) {
-            if ((tabSize > 9))
-            {
-                int* tab2 = (int*)Memory.Alloc(Memory.SizeOf(tab) + sizeof(int));
-                Memory.Copy(tab, tab2, Memory.SizeOf(tab));
-                tab = tab2;
-            } 
+            
+           if ((tabSize > 9))
+           {
+               int* tab2 = (int*)Memory.Alloc(tab.Length * sizeof(int) + sizeof(int));
+               fixed (int* a = tab) Memory.Copy(a, tab2, Memory.SizeOf(tab2));
+               int[] res = new int[tabSize + 1];
+               fixed (int* p = res) Memory.Copy(tab2, p, Memory.SizeOf(tab2));
+               tab = res;
+               Memory.Free(tab2);
+           }
             tab[tabSize] = nb;
-            tabSize++;           
+            tabSize++;                      
         }
 
         public void EnleverEntier(int x) {
+            int[] res = new int[tabSize - 1];
+            int j = 0;
 
+            for (int i = 0; i < tabSize ; i++) {
+                res[j] = tab[i];
+                if (i == x)
+                    i++;
+                j++;
+            }
+            tabSize--;
+            tab = res;
+        }
+
+        public void Trier() {
+            Array.Sort(tab);
+        }
+
+        public int NbrElement() {
+            return tab.Length;
+        }
+
+        public int ElementAtX(int x) {
+            return (tab[x]);
         }
     }
 }
