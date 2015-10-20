@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace TP1 {
-    unsafe class Program {
-       // private delegate void Del<T>(T str, T str2);
-        public delegate bool Del<B>(B item, B item2);
-//        public static void Notify<T>(T test) { }
+    public unsafe class Program {
 
-        public static bool test<B>(B str, B str2)
-        {
-            return(true);
-        }
-        static void Main<T>(string[] args) {
+        public delegate bool Del<B>(B item, B item2);
+        static void Main(string[] args) {
            
             /* Tavail sur TableauEntiersurleTas() */
 
@@ -34,26 +32,40 @@ namespace TP1 {
                 else
                     return (false);
             };
-                //delegate(T str, T str2) { Program<T>.test(tab[0], tab[1]); };
+
+            /* Travail sur TableauGeneric<> */
+
+
             TableauGeneric<string> banjo = new TableauGeneric<string>(a);
-//            Del<T> func = delegate(T str, T str2) { test<T>(banjo[0], banjo[1]); };
-            banjo.addElement("plop");
-            banjo.addElement("plop");
-            banjo.addElement("plop");
-            banjo.addElement("plop");
-            banjo.addElement("plop");
-            banjo.addElement("plop");
-            banjo.addElement("boum");
-            banjo.addElement("plop");
-            banjo.addElement("plop");
-            banjo.addElement("plop");
-            banjo.addElement("plop");
-            banjo.addElement("plop");
-            Console.WriteLine(banjo.getElem(6));
-            banjo.deleteElement(6);
-            Console.WriteLine(banjo.getElem(6));
+            banjo.ajouterElement("plopiti");
+            banjo.ajouterElement("plop");
+            banjo.ajouterElement("plopou");
+            banjo.ajouterElement("plopitijvy;");
+            banjo.ajouterElement("plopojol");
+            banjo.ajouterElement("plopouvftky");
+            banjo.ajouterElement("plopitikdkdkdkdkdkd");
+            banjo.ajouterElement("plopddkssùùùq");
+            banjo.ajouterElement("plopoudfghj");
+            banjo.ajouterElement("p");
+            banjo.ajouterElement("ploplkjhgfdertylkmlml,m,m,m");
+            banjo.ajouterElement("pl");
+            banjo.ajouterElement("plopkdkdlzsmsmsmsmsmsmsmmsldodleiti");
+            banjo.ajouterElement("plo");
+            banjo.ajouterElement("plopoukoeeoeodkoedkoekfoekfoekforkorkoror");
+            banjo.supprimerElement(9);
+            banjo.trierElement();
+            for (int i = 0; i < 14; i++)
+            {
+                Console.WriteLine(banjo.recupererElement(i));
+            }
             Console.WriteLine(banjo.reflexion());
-            Console.WriteLine("Fin"); 
+            Directory.CreateDirectory("C:\\tmp");
+            XmlSerializer xs = new XmlSerializer(typeof(TableauGeneric<string>));
+            using (StreamWriter wr = new StreamWriter(File.Create("C:\\tmp\\Serialisation_XML_TP1_Jeremy_&_Adrien.XML")))
+            {
+                xs.Serialize(wr, banjo);
+            }
+                Console.ReadKey();
         }
     }
 }
