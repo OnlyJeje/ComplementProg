@@ -6,8 +6,16 @@ using System.Threading.Tasks;
 
 namespace TP1 {
     unsafe class Program {
-        static void Main(string[] args) {
+       // private delegate void Del<T>(T str, T str2);
+        public delegate bool Del<T>(T item, T item2);
+        public static void Notify<T>(T test) { }
 
+        public static bool test<T>(T str, T str2)
+        {
+            return(true);
+        }
+        static void Main<T>(string[] args) {
+           
             /* Tavail sur TableauEntiersurleTas() */
 
             TableauEntiersSurLeTas tango = new TableauEntiersSurLeTas();
@@ -19,8 +27,9 @@ namespace TP1 {
             tango.Trier();
             tango.AfficherTableau();
             tango.Dispose();
-
-            TableauGeneric<string> banjo = new TableauGeneric<string>();
+            Del<string> a;
+            TableauGeneric<string> banjo = new TableauGeneric<string>(ref Del<string> a);
+//            Del<T> func = delegate(T str, T str2) { test<T>(banjo[0], banjo[1]); };
             banjo.addElement("plop");
             banjo.addElement("plop");
             banjo.addElement("plop");
