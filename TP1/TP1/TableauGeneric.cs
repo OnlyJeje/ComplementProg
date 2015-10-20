@@ -6,30 +6,19 @@ using System.Threading.Tasks;
 
 namespace TP1
 {
-    //delegate void Del(T str, T str2);
+
     public unsafe class TableauGeneric<T>
     {
-        private delegate bool Del<T>(T str, T str2);
         private int size = 0;
         public static T[] tab;
-        private Del<T> d;// = delegate (T str, T str2) { Program<T>.test(tab[0], tab[1]); };
-        private Program.Del<string> a;
-//        delegate bool handler<T> (T elem1, T elem2);
-        //Delegate handler = getsize;
+        private Program.Del<T> d;
 
-//        public T[] tab;
         public TableauGeneric (Program.Del<T> func)
         {
             tab = new T[10];
-            d = func; //delegate(T str, T str2) { Program<T>.test(tab[0], tab[1]); };
+            d = func;
         }
 
-/*        public TableauGeneric(Program.Del<string> a)
-        {
-            // TODO: Complete member initialization
-            this.a = a;
-        }
-        */
         public void addElement(T elem)
         {
             if (size >= 10)
@@ -65,6 +54,8 @@ namespace TP1
         }
         public void trions()
         {
+            int i, j = 0;
+
             if (this.d(tab[0], tab[1]) == true)
             {
 
