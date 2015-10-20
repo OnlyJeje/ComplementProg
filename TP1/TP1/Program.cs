@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TP1 {
     unsafe class Program {
        // private delegate void Del<T>(T str, T str2);
-        public delegate bool Del<T>(T item, T item2);
+        public delegate void Del<T>(T item, T item2);
         public static void Notify<T>(T test) { }
 
         public static bool test<T>(T str, T str2)
@@ -27,8 +27,9 @@ namespace TP1 {
             tango.Trier();
             tango.AfficherTableau();
             tango.Dispose();
-            Del<string> a;
-            TableauGeneric<string> banjo = new TableauGeneric<string>(ref Del<string> a);
+            Del<string> a = delegate(T item, T item2){};
+                //delegate(T str, T str2) { Program<T>.test(tab[0], tab[1]); };
+            TableauGeneric<string> banjo = new TableauGeneric<string>(a);
 //            Del<T> func = delegate(T str, T str2) { test<T>(banjo[0], banjo[1]); };
             banjo.addElement("plop");
             banjo.addElement("plop");
