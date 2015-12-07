@@ -49,23 +49,27 @@ namespace TP2 {
                             Display.Add("   " + elemen);
                         }
 
-                        /*Get assembly type name */
+                        /* Get assembly type name */
                         Display.Add("\nType : \n  " + t.BaseType.Name);
 
                         Display.Add("\nFields :");
-                        /*Get assembly fields and add to list*/
-                        FieldInfo[] field = t.GetFields();
+                        /* Get assembly fields and add to list */
+                        FieldInfo[] field = t.GetFields(BindingFlags.Public | BindingFlags.NonPublic |
+                   BindingFlags.Instance | BindingFlags.Static);
                         foreach (var f in field) {
                             Display.Add("   Nom: " + f.Name);
                             Display.Add("   Type : " + f.FieldType.Name);
+                            
                             foreach (var attr in Attribute.GetCustomAttributes(f).ToArray()) {
                                 Display.Add("   Attribut:" + attr.ToString());
                             }                           
                         }
 
                         Display.Add("Méthodes: ");
-                        /*Get assembly method and add to list*/
-                        MethodInfo[] method = t.GetMethods();
+                        /* Get assembly method and add to list */
+                        MethodInfo[] method = t.GetMethods(
+                   BindingFlags.Public | BindingFlags.NonPublic |
+                   BindingFlags.Instance | BindingFlags.Static);
                         foreach (var m in method){
                             Display.Add("   Nom : " + m.Name);
                             Display.Add("   Type de retour: " + m.ReturnType.Name);
