@@ -11,6 +11,7 @@ using System.Reflection;
 using System.IO;
 
 namespace TP2 {
+
     public partial class Form1 : Form {
         enum test {
             A,
@@ -36,14 +37,51 @@ namespace TP2 {
                 Assembly file;
 
                 file = Assembly.LoadFrom(openFileDialog.FileName);
-                int i = 0;
+
                     foreach(Type t in file.GetTypes()) {
-                        var attr = t.CustomAttributes;
-                        var name = t.Name;
 
+                        /* Get Assembly Name*/
+                        Display.Add("Nom: \n    " + t.Name);
 
-                        Display.Add(t.ToString());
+                        Display.Add("\nAttributs personnalisés:");
+                        /* Get assembly custom attribute and add to list */
+                        foreach (var elemen in Attribute.GetCustomAttributes(t).ToArray()) {
+                            Display.Add("   " + elemen);
+                        }
+
+                        /*Get assembly type name */
+                        Display.Add("\nType : \n  " + t.BaseType.Name);
+
+                        Display.Add("\nFields :");
+                        /*Get assembly fields and add to list*/
+                        FieldInfo[] field = t.GetFields();
+                        foreach (var f in field) {
+                            Display.Add("   Nom: " + f.Name);
+                            Display.Add("   Type : " + f.FieldType.Name);
+                            foreach (var attr in Attribute.GetCustomAttributes(f).ToArray()) {
+                                Display.Add("   Attribut:" + attr.ToString());
+                            }                           
+                        }
+
+                        Display.Add("Méthodes: ");
+                        /*Get assembly method and add to list*/
+                        MethodInfo[] method = t.GetMethods();
+                        foreach (var m in method){
+                            Display.Add("   Nom : " + m.Name);
+                            Display.Add("   Type de retour: " + m.ReturnType.Name);
+                            foreach (var attr in Attribute.GetCustomAttributes(m).ToArray()) {
+                                Display.Add("       Attribut:" + attr.ToString());
+                            }
+                            Display.Add("   Paramètres: ");
+                            /* Get method parameter and add to list */
+                            foreach (var param in m.GetParameters()) {
+                                Display.Add("       Nom: " + param.Name);
+                                Display.Add("       Type: " + param.ParameterType.Name + "\n");
+                            }
+                        }
+                        Display.Add("\n-------------------------------------------------\n");
                 }
+
                     richTextBox1.Lines = Display.ToArray();
             }
             catch (BadImageFormatException) {
